@@ -1,20 +1,20 @@
-# Usar uma imagem base do Python
+# Imagem do Python
 FROM python:3.11
 
-# Definir o diretório de trabalho no contêiner
+# Diretório no conteiner
 WORKDIR /app
 
-# Copiar os arquivos de requisitos para o contêiner
+# Copia as dependências
 COPY requirements.txt /app/
 
-# Instalar as dependências do Python
+# Instala as dependências do Python
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copiar o restante do código da aplicação para o contêiner
+# Copia o resto do código para o contêiner
 COPY . .
 
-# Expôr a porta que o Flask usará
+# Porta do Flask
 EXPOSE 5000
 
-# Definir o comando para rodar o Flask
+# Comando para rodar o Flask
 CMD ["python", "run.py"]

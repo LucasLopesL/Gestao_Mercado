@@ -30,7 +30,7 @@ def login():
 @jwt_required()
 def cadastrar_produto_route():
     data = request.get_json()
-    seller_id = get_jwt_identity()  # Obter seller_id do JWT
+    seller_id = get_jwt_identity()
     produto = criar_produto(data, seller_id)
     return jsonify({'message': 'Produto cadastrado com sucesso!'}), 201
 

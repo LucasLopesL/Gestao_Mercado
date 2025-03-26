@@ -1,4 +1,4 @@
-// Função para realizar o cadastro do Seller
+// Função de cadastro do Seller
 document
   .getElementById("formCadastro")
   .addEventListener("submit", function (event) {
@@ -32,7 +32,7 @@ document
       });
   });
 
-// Função para realizar o login do Seller
+// Função de login do Seller
 document
   .getElementById("formLogin")
   .addEventListener("submit", function (event) {
