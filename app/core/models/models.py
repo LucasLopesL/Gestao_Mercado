@@ -1,5 +1,4 @@
 from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime
 
 db = SQLAlchemy()
 
@@ -27,5 +26,5 @@ class Sale(db.Model):
     produto_id = db.Column(db.Integer, db.ForeignKey('product.id'), nullable=False)
     quantidade = db.Column(db.Integer, nullable=False)
     preco_venda = db.Column(db.Float, nullable=False)
-    data_venda = db.Column(db.DateTime, default=datetime.utcnow)
-
+    data_venda = db.Column(db.DateTime)
+    
