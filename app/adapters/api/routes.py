@@ -1,48 +1,37 @@
-from flask import Flask, request, jsonify
+from flask import Blueprint, request, jsonify, render_template
+from flask_jwt_extended import get_jwt_identity, jwt_required, create_access_token
+from app.core.services.services import validar_login
+from app.core.repositories.repositories import criar_seller, criar_produto
 from werkzeug.security import generate_password_hash
-from app.core.models import db, Seller
-import random
-from twilio.rest import Client
-from flask_jwt_extended import create_access_token
 
-app = Flask(__name__)
-app.config.from_object('config.Config')
-db.init_app(app)
+api = Blueprint('api', __name__, template_folder="../../web/templates")
 
-# Função para enviar o código via Twilio
-def enviar_codigo_ativacao(celular, codigo):
-    account_sid = 'seu_account_sid'
-    auth_token = 'seu_auth_token'
-    client = Client(account_sid, auth_token)
+@api.route("/")
+def home():
+    return render_template("index.html")
 
-    message = client.messages.create(
-        body=f"Seu código de ativação é {codigo}",
-        from_='+1415XXXXXXX',  # Número do Twilio
-        to=celular
-    )
-    return message.sid
-
-@app.route('/api/sellers', methods=['POST'])
-def criar_seller():
+@api.route('/api/sellers', methods=['POST'])
+def criar_seller_route():
     data = request.get_json()
-    codigo_ativacao = str(random.randint(1000, 9999))
+    data['senha'] = generate_password_hash(data['senha'])
+    seller = criar_seller(data)
+    return jsonify({'message': 'Seller cadastrado com sucesso!'}), 201
 
-    # Criar seller no banco
-    seller = Seller(
-        nome=data['nome'],
-        cnpj=data['cnpj'],
-        email=data['email'],
-        celular=data['celular'],
-        senha=generate_password_hash(data['senha']),
-    )
-    db.session.add(seller)
-    db.session.commit()
+@api.route('/api/auth/login', methods=['POST'])
+def login():
+    data = request.get_json()
+    seller = validar_login(data['email'], data['senha'])
+    if seller:
+        access_token = create_access_token(identity=seller.id)
+        return jsonify({'access_token': access_token}), 200
+    return jsonify({'message': 'Credenciais inválidas!'}), 401
 
-    # Enviar código de ativação
-    enviar_codigo_ativacao(data['celular'], codigo_ativacao)
+@api.route('/api/products', methods=['POST'])
+@jwt_required()
+def cadastrar_produto_route():
+    data = request.get_json()
+    seller_id = get_jwt_identity()  # Obter seller_id do JWT
+    produto = criar_produto(data, seller_id)
+    return jsonify({'message': 'Produto cadastrado com sucesso!'}), 201
 
-    return jsonify({'message': 'Seller cadastrado com sucesso, código de ativação enviado!'})
-
-if __name__ == '__main__':
-    app.run(debug=True)
 
