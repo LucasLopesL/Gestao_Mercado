@@ -1,8 +1,8 @@
 from twilio.rest import Client
 
 def enviar_codigo_ativacao(celular, codigo):
-    account_sid = 'ACfbef0f945503dc98894a6c205f1e8560'
-    auth_token = '8299a56fc293fabeec3cacc603c2dd31'
+    account_sid = ''
+    auth_token = ''
     client = Client(account_sid, auth_token)
 
     message = client.messages.create(
