@@ -33,5 +33,3 @@ def cadastrar_produto_route():
     seller_id = get_jwt_identity()
     produto = criar_produto(data, seller_id)
     return jsonify({'message': 'Produto cadastrado com sucesso!'}), 201
-
-

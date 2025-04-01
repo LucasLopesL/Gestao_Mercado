@@ -1,12 +1,11 @@
 version: "3.8"
 
 services:
-  # Aplicação Flask
   app:
     build: .
     container_name: flask_app
     ports:
-      - "5000:5000" # Mapeando a porta do contêiner para a máquina host
+      - "5000:5000"
     environment:
       - FLASK_ENV=development
       - FLASK_APP=run.py
@@ -19,7 +18,6 @@ services:
     volumes:
       - .:/app
 
-  # Banco de dados MySQL
   db:
     image: mysql:5.7
     container_name: mysql_db
@@ -27,7 +25,7 @@ services:
       MYSQL_ROOT_PASSWORD: rootpassword
       MYSQL_DATABASE: gestao_estoque
     ports:
-      - "3308:3306" # Mapeando a porta 3308 do contêiner para a máquina host
+      - "3308:3306"
     volumes:
       - db_data:/var/lib/mysql
 
