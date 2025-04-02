@@ -1,4 +1,4 @@
-# routes/auth_routes.py
+# routes.api
 from flask import Blueprint, request, jsonify
 from src.services.sellersService import AuthService
 
