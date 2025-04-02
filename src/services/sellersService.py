@@ -12,7 +12,7 @@ TWILIO_WHATSAPP_NUMBER = 'whatsapp:+14155238886'
 DESTINATION_NUMBER = 'whatsapp:+5511952473784'  
 
 twilio_client = Client(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
-
+#class
 class AuthService:
     @staticmethod
     def register_seller(nome, cnpj, email, celular, senha):
